@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float coyoteTime = 0.1f;       // still allowed to jump this long after leaving the ground
     [SerializeField] float jumpBuffer = 0.12f;      // a jump pressed this early still counts on landing
 
+    [SerializeField] PauseMenu pauseMenu;
     float speedMultiplier = 1f;
     Coroutine boost;
 
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+	if (pauseMenu == null) pauseMenu = FindFirstObjectByType<PauseMenu>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;                   // a capsule would tip over
         rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+	if (Time.timeScale == 0f) return;
         if (cam == null && Camera.main != null) cam = Camera.main.transform;
 
         float h = Input.GetAxis("Horizontal");
